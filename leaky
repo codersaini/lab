@@ -1,0 +1,49 @@
+package internallab;
+
+import java.util.Scanner;
+
+public class leaky {
+	public static void main(String [] args) {
+		Scanner sc= new Scanner (System.in);
+		System.out.println("enter bucket size:");
+		int bsize=sc.nextInt();
+		System.out.println("enter opt rate:");
+		int optrate= sc.nextInt();
+		System.out.println("enter number of packets:");
+		int n=sc.nextInt();
+		System.out.println("enter packets");
+		int p[]=new int[n];
+		for(int i=0;i<n;i++) {
+			p[i]=sc.nextInt();
+		}
+		System.out.println("RECEIVED\tBUCKET CONTENT\tACCC/REJ\tREMAINING");
+		int bcon=0,rem=0,rec=0;
+		for(int i=0;i<n;i++) {
+			rec=p[i];
+			bcon=rec+rem;
+			if(bcon>bsize) {
+				bcon=rem;
+				rem=bcon-optrate;
+				if(rem<0) {
+					rem=0;
+				}
+				System.out.println(rec+"\t"+bcon+"\trej\t"+rem);
+			}
+			else {
+				rem=bcon-optrate;
+				if(rem<0) {
+					rem=0;
+				}
+				System.out.println(rec+"\t"+bcon+"\tacc\t"+rem);
+			}
+		}
+		while(rem>0) {
+			bcon=rem;
+			rem=bcon-optrate;
+			if(rem<0) {
+				rem=0;
+			}
+			System.out.println("--\t"+bcon+"\t--\t"+rem);
+		}
+	}
+}
